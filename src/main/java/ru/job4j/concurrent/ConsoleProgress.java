@@ -13,7 +13,8 @@ public class ConsoleProgress implements Runnable {
             }
         } catch (InterruptedException e) {
             System.out.println("\n" + " Process finished");
-        }
+            Thread.currentThread().interrupt();
+         }
     }
 
     public static void main(String[] args) {
