@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Date;
 
 import static java.lang.Math.max;
 import static java.lang.System.currentTimeMillis;
@@ -32,14 +33,18 @@ public class Wget implements Runnable {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             long startDate = currentTimeMillis();
+            int downloadData = 0;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                int targetTime = 1024 / speed * 1000;
-                long finishDate = currentTimeMillis();
-                int currentTime = (int) (finishDate - startDate);
-                Thread.sleep(max(targetTime - currentTime, 0));
+                downloadData += bytesRead;
+                if (downloadData >= speed) {
+                    long finishDate = currentTimeMillis();
+                    int currentTime = (int) (finishDate - startDate);
+                    Thread.sleep(max(1000 - currentTime, 0));
+                    startDate = currentTimeMillis();
+                    downloadData = 0;
+                }
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
-                startDate = currentTimeMillis();
-            }
+             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -69,7 +74,9 @@ public class Wget implements Runnable {
 
     public static void main(String[] args) throws InterruptedException {
         Thread wget = new Thread(new Wget(args));
+        System.out.println("Start download - " + new Date());
         wget.start();
         wget.join();
+        System.out.println("Finish download - " + new Date());
     }
 }
