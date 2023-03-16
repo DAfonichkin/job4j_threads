@@ -7,8 +7,8 @@ public class ThreadState {
         first.start();
         second.start();
         while (first.getState() != Thread.State.TERMINATED || second.getState() != Thread.State.TERMINATED) {
-            continue;
+            System.out.print("\r Задача в работе" + System.lineSeparator());
         }
-        System.out.println("Работа завершена");
+        System.out.println(" Работа завершена");
     }
 }
