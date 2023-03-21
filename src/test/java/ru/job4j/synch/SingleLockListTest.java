@@ -10,7 +10,7 @@ import java.util.TreeSet;
 public class SingleLockListTest {
 
     @Test
-    public void whenIt(){
+    public void whenIt() {
         var init = new ArrayList<Integer>();
         SingleLockList<Integer> list = new SingleLockList<>(init);
         list.add(1);
