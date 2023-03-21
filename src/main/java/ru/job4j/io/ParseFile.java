@@ -10,15 +10,21 @@ public final class ParseFile {
         this.file = file;
     }
 
-    public String getContent(Predicate<Integer> filter) throws IOException {
+    public String getContentWithoutUnicode() throws IOException {
+        return getContentWithFilter((i) -> (i < 0x80));
+    }
+
+    public String getContent() throws IOException {
+        return getContentWithFilter((i) -> (true));
+    }
+
+    private String getContentWithFilter(Predicate<Integer> filter) throws IOException {
         StringBuilder output = new StringBuilder();
-        try (InputStream i = new FileInputStream(file)) {
-            byte[] dataBuffer = new byte[1024];
-            while ((i.read(dataBuffer, 0, 1024)) > 0) {
-                for (int ch : dataBuffer) {
-                    if (filter.test(ch)) {
-                        output.append((char) ch);
-                    }
+        try (Reader i = new BufferedReader(new FileReader(file))) {
+            int ch;
+            while ((ch = i.read()) != -1) {
+                if (filter.test(ch)) {
+                    output.append((char) ch);
                 }
             }
         }
