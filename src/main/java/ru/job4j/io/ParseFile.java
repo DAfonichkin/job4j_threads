@@ -11,11 +11,11 @@ public final class ParseFile {
     }
 
     public String getContentWithoutUnicode() throws IOException {
-        return getContentWithFilter((i) -> (i < 0x80));
+        return getContentWithFilter(i -> i < 0x80);
     }
 
     public String getContent() throws IOException {
-        return getContentWithFilter((i) -> (true));
+        return getContentWithFilter(i -> true);
     }
 
     private String getContentWithFilter(Predicate<Integer> filter) throws IOException {
