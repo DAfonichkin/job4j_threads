@@ -1,5 +1,6 @@
 package ru.job4j.findindex;
 
+import java.util.Objects;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
@@ -31,10 +32,7 @@ public class IndexFinder<T> extends RecursiveTask<Integer> {
 
     private int findElement() {
         for (int i = from; i <= to; i++) {
-            if (array[i] == null && el != null) {
-                continue;
-            }
-            if ((array[i] == null && el == null) || array[i].equals(el)) {
+            if (Objects.equals(array[i], el)) {
                 return i;
             }
         }
