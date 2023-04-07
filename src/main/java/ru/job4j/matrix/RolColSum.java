@@ -4,26 +4,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class RolColSum {
-    public static class Sums {
-        private int rowSum;
-        private int colSum;
-
-        public int getRowSum() {
-            return rowSum;
-        }
-
-        public int getColSum() {
-            return colSum;
-        }
-    }
 
     public static Sums[] sum(int[][] matrix) {
         Sums[] array = new Sums[matrix.length];
         for (int i = 0; i < matrix.length; i++) {
             Sums sums = new Sums();
             for (int j = 0; j < matrix.length; j++) {
-                sums.rowSum += matrix[i][j];
-                sums.colSum += matrix[j][i];
+                sums.setRowSum(sums.getRowSum() + matrix[i][j]);
+                sums.setColSum(sums.getColSum() + matrix[j][i]);
             }
             array[i] = sums;
         }
@@ -46,8 +34,8 @@ public class RolColSum {
         return CompletableFuture.supplyAsync(() -> {
             Sums sums = new Sums();
             for (int j = 0; j < matrix.length; j++) {
-                sums.rowSum += matrix[row][j];
-                sums.colSum += matrix[j][row];
+                sums.setRowSum(sums.getRowSum() + matrix[row][j]);
+                sums.setColSum(sums.getColSum() + matrix[j][row]);
             }
             return sums;
         });
